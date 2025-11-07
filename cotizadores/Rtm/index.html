@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cotización RTM - Multivehículo CDA BARRANCABERMEJA</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    html, body {
+      width: 100%; height: 100%; margin: 0; padding: 0;
+      font-family: Arial, sans-serif; font-size: 12pt;
+      background: #f2f2f2;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.10);
+      position: relative;
+      font-size: 1em;
+    }
+    .logo-formulario {
+      max-width: 120px;
+      width: 30%;
+      min-width: 90px;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+    h2 { 
+      margin-top: 0; 
+      font-size: 16pt;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    input, select, button {
+      padding: 10px;
+      margin-top: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    button[type="submit"], .boton-imprimir {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+      font-size: 1em;
+      padding: 10px 0;
+    }
+    button[type="submit"]:hover, .boton-imprimir:hover {
+      background: #0056b3;
+    }
+    .carta {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
+      background: url('memebrete.jpg') no-repeat top left;
+      background-size: 100% 100%;
+      background-color: white;
+      border: none;
+      box-sizing: border-box;
+      display: none;
+      position: relative;
+      z-index: 1;
+      font-family: Arial, sans-serif;
+      font-size: 12pt;
+      overflow: hidden;
+      page-break-after: always;
+    }
+    @media print {
+      html, body { background: none !important; width: 210mm !important; height: 297mm !important; }
+      .container { display: none !important; }
+      .carta { display: block !important; box-shadow: none !important; margin: 0 !important; border: none !important; width: 210mm !important; height: 297mm !important; padding: 0 !important; background: url('memebrete.jpg') no-repeat top left !important; background-size: 100% 100% !important; background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; overflow: hidden !important; }
+      .boton-imprimir, #volverBtn { display: none !important; }
+    }
+    .contenido-carta {
+      width: 175mm;
+      margin-left: 17mm;
+      margin-right: 17mm;
+      margin-top: 53mm;
+      text-align: justify;
+    }
+    @media print {
+      .contenido-carta {
+        margin-top: 53mm;
+        margin-left: 17mm;
+        margin-right: 17mm;
+      }
+    }
+    .carta table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      table-layout: fixed;
+    }
+    .carta th, .carta td {
+      padding: 6px 3px;
+      border: 1px solid #ccc;
+      text-align: center;
+      word-break: break-word;
+      vertical-align: middle;
+    }
+    .carta th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+    .carta td.descripcion {
+      text-align: left;
+    }
+    .firma-area {
+      margin-top: 20px;
+      position: relative;
+      width: 250px;
+      height: 110px;
+    }
+    .firma-img {
+      position: absolute;
+      left: 0;
+      top: -10px;
+      width: 170px;
+      height: auto;
+      pointer-events: none;
+      z-index: 2;
+      background: none;
+    }
+    .linea-firma {
+      position: absolute;
+      left: 0;
+      top: 40px;
+      width: 180px;
+      border-bottom: 1.5px solid #222;
+      height: 1px;
+      z-index: 1;
+    }
+    .firma-nombre {
+      position: absolute;
+      left: 0;
+      top: 45px;
+      font-weight: bold;
+      font-size: 12pt;
+      margin: 0;
+      z-index: 3;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .firma-cargo {
+      position: absolute;
+      left: 0;
+      top: 65px;
+      font-style: italic;
+      font-size: 11pt;
+      margin: 0;
+      z-index: 3;
+      width: 100%;
+    }
+    .group-header { background-color: #e0e0e0 !important; }
+    #volverBtn {
+      background: #6c757d;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px;
+      margin: 20px auto;
+      display: block;
+      font-size: 1em;
+      border-radius: 4px;
+    }
+    #volverBtn:hover { 
+      background: #5a6268; 
+    }
+    .botones-carta {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="formContainer">
+  <img src="logo.png" alt="Logo" class="logo-formulario">
+  <h2>Cotización RTM - Multivehículo CDA BARRANCABERMEJA</h2>
+  <form id="formulario" autocomplete="off">
+    <label>Tipo de vehículo:
+      <select id="tipoVehiculo" required>
+        <option value="moto">Motocicleta 4T</option>
+        <option value="livianoNoPublico">Vehículo Liviano No Público</option>
+        <option value="livianoPublico">Vehículo Liviano Público</option>
+      </select>
+    </label>
+    <label>Nombre del cliente:
+      <input type="text" id="nombre" required>
+    </label>
+    <label>Tipo de identificación:
+      <select id="tipoId">
+        <option value="CC">Cédula de ciudadanía</option>
+        <option value="NIT">NIT</option>
+      </select>
+    </label>
+    <label>Número de identificación:
+      <input type="text" id="numeroId" required>
+    </label>
+    <label>Ciudad:
+      <input type="text" id="ciudad" required>
+    </label>
+    <label>Placa del vehículo:
+      <input type="text" id="placa" required>
+    </label>
+    <label>Año del modelo:
+      <input type="number" id="anio" min="1990" max="2025" required>
+    </label>
+    <label>Tipo de servicio:
+      <select id="servicio">
+        <option value="Particular">Particular</option>
+        <option value="Oficial">Oficial</option>
+        <option value="Público">Público</option>
+      </select>
+    </label>
+    <button type="submit">Generar Cotización</button>
+  </form>
+</div>
+
+<div class="carta" id="carta">
+  <div class="contenido-carta">
+    <p>Barrancabermeja, <span id="fecha"></span></p>
+    <p>
+      <strong>Señores:</strong><br>
+      <span id="rNombre"></span><br>
+      <span id="rTipoId"></span>: <span id="rNumeroId"></span><br>
+      <span id="rCiudad"></span>
+    </p>
+
+    <p><strong>Ref.:</strong> Cotización RTM y EC</p>
+    <p>Atendiendo su amable solicitud, me permito presentar para su consideración y análisis, la propuesta
+      para la realización del servicio de Revisión Técnico Mecánica y de Emisiones Contaminantes (RTM y EC).</p>
+
+    <p><strong>• Costos del servicio:</strong></p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Descripción</th>
+          <th colspan="2" class="group-header">SERVICIO</th>
+          <th colspan="5" class="group-header">INGRESOS A TERCEROS</th>
+          <th class="group-header">TOTAL</th>
+        </tr>
+        <tr>
+          <th style="width: 25%;">Descripción del servicio</th>
+          <th style="width: 10%;">TARIFA</th>
+          <th style="width: 8%;">IVA</th>
+          <th style="width: 8%;">RUNT</th>
+          <th style="width: 10%;">SICOV</th>
+          <th style="width: 10%;">IVA SICOV</th>
+          <th style="width: 12%;">Recaudo más IVA</th>
+          <th style="width: 7%;">ANSV</th>
+          <th style="width: 10%;"><strong>TOTAL</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="descripcion" colspan="1" id="vDescripcion"></td>
+          <td id="vTarifa"></td>
+          <td id="vIva"></td>
+          <td id="vRunt"></td>
+          <td id="vSicov"></td>
+          <td id="vIvaSicov"></td>
+          <td id="vRecaudoTotal"></td>
+          <td id="vAnsv"></td>
+          <td id="vTotal"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Los precios ofertados incluyen todos los costos directos e indirectos, tasas, sobretasas y demás.</p>
+    <p>Dentro de esta cotización se debe tener en cuenta los siguientes aspectos:</p>
+    <p>1. Los valores aquí definidos están de acuerdo a lo establecido en la Resolución 202403040003125 de 2024 del Ministerio de Transporte, mediante la cual se estableció el rango de precios que deben cobrar los Centros de Diagnóstico Automotor (CDA) por la prestación de servicios de Revisión Técnico Mecánica y de Emisiones Contaminantes.</p>
+    <p>2. Para efectos de Retenciones, deducciones o contribuciones, solo se deberán aplicar sobre los recursos propios del servicio, ya que los otros valores RUNT, ANSV, SICOV y Recaudo corresponden a Ingresos recibidos para terceros.</p>
+    
+    <p>Favor realizar transferencia a la cuenta corriente del Banco de Bogotá No. 168604882 a nombre de INVERSIN LTDA.</p>
+    <p>Colocamos nuestras instalaciones a su servicio.</p>
+    <p>Cordialmente,</p>
+
+    <div class="firma-area">
+      <img src="firma.png" alt="Firma" class="firma-img">
+      <span class="linea-firma"></span>
+      <span class="firma-nombre">MARIAM ANDREA RUEDA SUSPEZ</span>
+      <span class="firma-cargo">Gerente</span>
+    </div>
+
+    <div class="botones-carta">
+      <button class="boton-imprimir" onclick="window.print()">Imprimir / Guardar PDF</button>
+      <button id="volverBtn" onclick="volver()">Volver a editar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Datos actualizados según la tabla proporcionada
+  const datosMotos = [
+    { rango: "0-2", años: [2025,2024,2023], tarifa: 149813, ivaTarifa: 28464, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8100, total: 233441 },
+    { rango: "3-7", años: [2022,2021,2020,2019,2018], tarifa: 149813, ivaTarifa: 28464, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8400, total: 233741 },
+    { rango: "8-16", años: [2017,2016,2015,2014,2013,2012,2011,2010,2009], tarifa: 149813, ivaTarifa: 28464, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8700, total: 234041 },
+    { rango: "17+", años: [2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997], tarifa: 149813, ivaTarifa: 28464, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8400, total: 233741 }
+  ];
+
+  const datosVehiculosLivianosNoPublicos = [
+    { rango: "0-2", años: [2025,2024,2023], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8500, total: 349041 },
+    { rango: "3-7", años: [2022,2021,2020,2019,2018], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8900, total: 349441 },
+    { rango: "8-16", años: [2017,2016,2015,2014,2013,2012,2011,2010,2009], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 9200, total: 349741 },
+    { rango: "17+", años: [2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8900, total: 349441 }
+  ];
+
+  const datosVehiculosLivianosPublicos = [
+    { rango: "0-2", años: [2025,2024,2023], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8000, total: 348541 },
+    { rango: "3-7", años: [2022,2021,2020,2019,2018], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8300, total: 348841 },
+    { rango: "8-16", años: [2017,2016,2015,2014,2013,2012,2011,2010,2009], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8600, total: 349141 },
+    { rango: "17+", años: [2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997], tarifa: 246619, ivaTarifa: 46858, runt: 5500, sicov: 26677, ivaSicov: 5069, recaudo: 8250, ivaRecaudo: 1568, ansv: 8300, total: 348841 }
+  ];
+
+  function formatNumber(n) {
+    return n.toLocaleString('es-CO');
+  }
+
+  document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const tipoVehiculo = document.getElementById("tipoVehiculo").value;
+    const nombre = document.getElementById("nombre").value;
+    const tipoId = document.getElementById("tipoId").value;
+    const numeroId = document.getElementById("numeroId").value;
+    const ciudad = document.getElementById("ciudad").value;
+    const placa = document.getElementById("placa").value.toUpperCase();
+    const anio = parseInt(document.getElementById("anio").value);
+    const servicio = document.getElementById("servicio").value;
+
+    let grupo, descripcion, tipoVehiculoTexto;
+    if (tipoVehiculo === "moto") {
+      grupo = datosMotos.find(g => g.años.includes(anio)) || datosMotos.find(g => g.rango === "17+");
+      descripcion = `Motocicleta 4T ${servicio} Placas ${placa}, Modelo ${anio}`;
+      tipoVehiculoTexto = "Motocicleta 4T";
+    } else if (tipoVehiculo === "livianoNoPublico") {
+      grupo = datosVehiculosLivianosNoPublicos.find(g => g.años.includes(anio)) || datosVehiculosLivianosNoPublicos.find(g => g.rango === "17+");
+      descripcion = `Vehículo Liviano ${servicio} Placas ${placa}, Modelo ${anio}`;
+      tipoVehiculoTexto = "Vehículo Liviano No Público";
+    } else if (tipoVehiculo === "livianoPublico") {
+      grupo = datosVehiculosLivianosPublicos.find(g => g.años.includes(anio)) || datosVehiculosLivianosPublicos.find(g => g.rango === "17+");
+      descripcion = `Vehículo Liviano Público Placas ${placa}, Modelo ${anio}`;
+      tipoVehiculoTexto = "Vehículo Liviano Público";
+    }
+
+    const recaudoTotal = (grupo.recaudo || 0) + (grupo.ivaRecaudo || 0);
+
+    const hoy = new Date();
+    const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("fecha").textContent = hoy.toLocaleDateString('es-CO', opcionesFecha);
+
+    document.getElementById("rNombre").textContent = nombre;
+    document.getElementById("rTipoId").textContent = tipoId;
+    document.getElementById("rNumeroId").textContent = numeroId;
+    document.getElementById("rCiudad").textContent = ciudad;
+
+    document.getElementById("vDescripcion").textContent = descripcion;
+    document.getElementById("vTarifa").textContent = formatNumber(grupo.tarifa);
+    document.getElementById("vIva").textContent = formatNumber(grupo.ivaTarifa);
+    document.getElementById("vRunt").textContent = formatNumber(grupo.runt);
+    document.getElementById("vSicov").textContent = formatNumber(grupo.sicov);
+    document.getElementById("vIvaSicov").textContent = formatNumber(grupo.ivaSicov);
+    document.getElementById("vRecaudoTotal").textContent = formatNumber(recaudoTotal);
+    document.getElementById("vAnsv").textContent = formatNumber(grupo.ansv);
+    document.getElementById("vTotal").textContent = "$ " + formatNumber(grupo.total);
+
+    document.getElementById("formContainer").style.display = "none";
+    document.getElementById("carta").style.display = "block";
+    document.getElementById("volverBtn").style.display = "inline-block";
+  });
+
+  function volver() {
+    document.getElementById("carta").style.display = "none";
+    document.getElementById("formContainer").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
