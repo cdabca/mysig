@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema CDA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>Sistema de Gestión CDA</h1>
+                <div class="user-info">
+                    <span id="user-email">usuario@cda.com</span>
+                    <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <h3>COTIZACIONES</h3>
+                <ul>
+                    <li><a href="cotizador-preventivas.html">Mantenimientos Preventivos</a></li>
+                    <li><a href="cotizador-rtm.html">Revisión Técnico-Mecánica</a></li>
+                </ul>
+
+                <h3>SISTEMA DE GESTIÓN</h3>
+                <ul>
+                    <li><a href="modulo-calidad.html">Calidad</a></li>
+                    <li><a href="modulo-sst.html">SST</a></li>
+                    <li><a href="modulo-sarlaft.html">SARLAFT</a></li>
+                </ul>
+
+                <h3>ADMINISTRACIÓN</h3>
+                <ul>
+                    <li><a href="reportes.html">Reportes</a></li>
+                    <li><a href="configuracion.html">Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="welcome-section">
+                <h2>Bienvenido al Sistema de Gestión</h2>
+                <p>Selecciona un módulo del menú lateral para comenzar.</p>
+                
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <h3>Cotizaciones</h3>
+                        <p>Genera cotizaciones de RTM y preventivos</p>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Calidad</h3>
+                        <p>Gestión documental y registros</p>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>SST</h3>
+                        <p>Seguridad y Salud en el Trabajo</p>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>SARLAFT</h3>
+                        <p>Sistema de prevención de lavado de activos</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
