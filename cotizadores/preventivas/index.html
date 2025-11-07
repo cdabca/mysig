@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cotización Revisión Preventiva - CDA BARRANCABERMEJA</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    html, body {
+      width: 100%; height: 100%; margin: 0; padding: 0;
+      font-family: Arial, sans-serif; font-size: 12pt;
+      background: #f2f2f2;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.10);
+      position: relative;
+      font-size: 1em;
+    }
+    .logo-formulario {
+      max-width: 120px;
+      width: 30%;
+      min-width: 90px;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+    h2 { 
+      margin-top: 0; 
+      font-size: 16pt;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    input, select, button {
+      padding: 10px;
+      margin-top: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    button[type="submit"], .boton-imprimir {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+      font-size: 1em;
+      padding: 10px 0;
+    }
+    button[type="submit"]:hover, .boton-imprimir:hover {
+      background: #0056b3;
+    }
+    .carta {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
+      background: url('memebrete.jpg') no-repeat top left;
+      background-size: 100% 100%;
+      background-color: white;
+      border: none;
+      box-sizing: border-box;
+      display: none;
+      position: relative;
+      z-index: 1;
+      font-family: Arial, sans-serif;
+      font-size: 12pt;
+      overflow: hidden;
+      page-break-after: always;
+    }
+    @media print {
+      html, body { background: none !important; width: 210mm !important; height: 297mm !important; }
+      .container { display: none !important; }
+      .carta { display: block !important; box-shadow: none !important; margin: 0 !important; border: none !important; width: 210mm !important; height: 297mm !important; padding: 0 !important; background: url('memebrete.jpg') no-repeat top left !important; background-size: 100% 100% !important; background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; overflow: hidden !important; }
+      .boton-imprimir, #volverBtn { display: none !important; }
+    }
+    .contenido-carta {
+      width: 175mm;
+      margin-left: 17mm;
+      margin-right: 17mm;
+      margin-top: 48mm;
+      text-align: justify;
+      font-size: 10.5pt;
+      line-height: 1.3;
+    }
+    @media print {
+      .contenido-carta {
+        margin-top: 48mm;
+        margin-left: 17mm;
+        margin-right: 17mm;
+        font-size: 10.5pt;
+        line-height: 1.3;
+      }
+    }
+    .carta table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 10pt;
+      table-layout: fixed;
+    }
+    .carta th, .carta td {
+      padding: 6px 4px;
+      border: 1px solid #ccc;
+      text-align: center;
+      word-break: break-word;
+      vertical-align: middle;
+    }
+    .carta th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+    .carta td.descripcion {
+      text-align: left;
+    }
+    .firma-area {
+      margin-top: 20px;
+      position: relative;
+      width: 250px;
+      height: 110px;
+    }
+    .firma-img {
+      position: absolute;
+      left: 0;
+      top: -10px;
+      width: 170px;
+      height: auto;
+      pointer-events: none;
+      z-index: 2;
+      background: none;
+    }
+    .linea-firma {
+      position: absolute;
+      left: 0;
+      top: 40px;
+      width: 180px;
+      border-bottom: 1.5px solid #222;
+      height: 1px;
+      z-index: 1;
+    }
+    .firma-nombre {
+      position: absolute;
+      left: 0;
+      top: 45px;
+      font-weight: bold;
+      font-size: 12pt;
+      margin: 0;
+      z-index: 3;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .firma-cargo {
+      position: absolute;
+      left: 0;
+      top: 65px;
+      font-style: italic;
+      font-size: 11pt;
+      margin: 0;
+      z-index: 3;
+      width: 100%;
+    }
+    #volverBtn {
+      background: #6c757d;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px;
+      margin: 20px auto;
+      display: block;
+      font-size: 1em;
+      border-radius: 4px;
+    }
+    #volverBtn:hover { 
+      background: #5a6268; 
+    }
+    .botones-carta {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="formContainer">
+  <img src="logo.png" alt="Logo" class="logo-formulario">
+  <h2>Cotización Revisión Preventiva<br>CDA BARRANCABERMEJA</h2>
+  <form id="formulario" autocomplete="off">
+    <label>Nombre del cliente:
+      <input type="text" id="nombre" required>
+    </label>
+    <label>Tipo de identificación:
+      <select id="tipoId">
+        <option value="CC">Cédula de ciudadanía</option>
+        <option value="NIT">NIT</option>
+      </select>
+    </label>
+    <label>Número de identificación:
+      <input type="text" id="numeroId" required>
+    </label>
+    <label>Ciudad:
+      <input type="text" id="ciudad" required>
+    </label>
+    <label>Placa del vehículo:
+      <input type="text" id="placa" required>
+    </label>
+    <label>Año del modelo:
+      <input type="number" id="anio" min="1990" max="2025" required>
+    </label>
+    <label>Precio total del servicio:
+      <select id="precioTotal" required>
+        <option value="60000">$60.000 (Tarifa: $50.420 + IVA: $9.580)</option>
+        <option value="50000">$50.000 (Tarifa: $42.017 + IVA: $7.983)</option>
+      </select>
+    </label>
+    <button type="submit">Generar Cotización</button>
+  </form>
+</div>
+
+<div class="carta" id="carta">
+  <div class="contenido-carta">
+    <p>Barrancabermeja, <span id="fecha"></span></p>
+    <p>
+      <strong>Señores:</strong><br>
+      <span id="rNombre"></span><br>
+      <span id="rTipoId"></span>: <span id="rNumeroId"></span><br>
+      <span id="rCiudad"></span>
+    </p>
+
+    <p><strong>Ref.:</strong> Revisión Preventiva</p>
+    <p>Atendiendo su amable solicitud, me permito presentar para su consideración y análisis, la propuesta para la realización del servicio Revisión Preventiva:</p>
+
+    <p><strong>• Costos del servicio:</strong></p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50%;">Descripción</th>
+          <th style="width: 20%;">TARIFA</th>
+          <th style="width: 15%;">IVA</th>
+          <th style="width: 15%;"><strong>TOTAL</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="descripcion" id="vDescripcion"></td>
+          <td id="vTarifa"></td>
+          <td id="vIva"></td>
+          <td id="vTotal"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Dentro de esta cotización se debe tener en cuenta los siguientes aspectos:</p>
+    
+    <p>1. La revisión preventiva es un servicio diferente a la Revisión Técnico Mecánica y de Emisiones Contaminantes y no está vinculado a la entrega de un certificado.</p>
+    
+    <p>2. La revisión preventiva entrega un informe con un concepto aprobado o rechazado, según el cumplimiento de los ítems de inspección de la NTC 5375:2012, evaluados sensorialmente y mediante pruebas mecanizadas. Esto incluye la medición de la profundidad de labrado de las llantas de servicio y de repuesto, verificación de fugas de líquidos, y revisión del estado general de la parte inferior del vehículo de manera visual y al tacto, sin usar equipos especializados. También se comprueban los niveles de líquidos en los depósitos (frenos, limpiaparabrisas, refrigerante) y se realizan pruebas de alineación, suspensión, frenos, luces y emisiones contaminantes.</p>
+    
+    <p>3. La revisión preventiva no reemplaza el mantenimiento preventivo, como se indica en artículo 3 de la resolución 0315 de 2013 aclarado por el artículo 1 de la resolución 378 de 2013 "Artículo 3.- Mantenimiento de vehículos. El mantenimiento de los vehículos será preventivo y correctivo. El mantenimiento preventivo constituye la serie de intervenciones y reparaciones realizadas al vehículo con la finalidad de anticipar fallas o desperfectos; no podrá entenderse por mantenimiento preventivo las actividades de revisión o inspección. El mantenimiento correctivo es aquel que se ejecuta en cualquier momento al vehículo y ante la evidencia de una falla en cualquiera de sus componentes."</p>
+
+    <p>De optar por nuestros servicios por favor realizar transferencia a la cuenta corriente del Banco de Bogotá No. 168604882 a nombre de INVERSIN LTDA.</p>
+    <p>Colocamos nuestras instalaciones a su servicio.</p>
+    <p>Cordialmente,</p>
+
+    <div class="firma-area">
+      <img src="firma.png" alt="Firma" class="firma-img">
+      <span class="linea-firma"></span>
+      <span class="firma-nombre">MARIAM ANDREA RUEDA SUSPEZ</span>
+      <span class="firma-cargo">Gerente</span>
+    </div>
+
+    <div class="botones-carta">
+      <button class="boton-imprimir" onclick="window.print()">Imprimir / Guardar PDF</button>
+      <button id="volverBtn" onclick="volver()">Volver a editar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function formatNumber(n) {
+    return n.toLocaleString('es-CO');
+  }
+
+  document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const tipoId = document.getElementById("tipoId").value;
+    const numeroId = document.getElementById("numeroId").value;
+    const ciudad = document.getElementById("ciudad").value;
+    const placa = document.getElementById("placa").value.toUpperCase();
+    const anio = parseInt(document.getElementById("anio").value);
+    const precioTotal = parseInt(document.getElementById("precioTotal").value);
+
+    let tarifa, iva;
+    if (precioTotal === 60000) {
+      tarifa = 50420;
+      iva = 9580;
+    } else {
+      tarifa = 42017;
+      iva = 7983;
+    }
+
+    const descripcion = `Vehículo Liviano Público Placas ${placa}, Modelo ${anio}`;
+
+    const hoy = new Date();
+    const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    const diaSemana = dias[hoy.getDay()];
+    const dia = hoy.getDate();
+    const mes = meses[hoy.getMonth()];
+    const año = hoy.getFullYear();
+    
+    document.getElementById("fecha").textContent = `${diaSemana} ${dia} de ${mes} de ${año}`;
+
+    document.getElementById("rNombre").textContent = nombre;
+    document.getElementById("rTipoId").textContent = tipoId;
+    document.getElementById("rNumeroId").textContent = numeroId;
+    document.getElementById("rCiudad").textContent = ciudad;
+
+    document.getElementById("vDescripcion").textContent = descripcion;
+    document.getElementById("vTarifa").textContent = formatNumber(tarifa);
+    document.getElementById("vIva").textContent = formatNumber(iva);
+    document.getElementById("vTotal").textContent = formatNumber(precioTotal);
+
+    document.getElementById("formContainer").style.display = "none";
+    document.getElementById("carta").style.display = "block";
+    document.getElementById("volverBtn").style.display = "inline-block";
+  });
+
+  function volver() {
+    document.getElementById("carta").style.display = "none";
+    document.getElementById("formContainer").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
